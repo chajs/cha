@@ -1,0 +1,29 @@
+{
+  "name": "cha",
+  "version": "0.1.0",
+  "description": "Make task chaining.",
+  "main": "./lib/cha.js",
+  "scripts": {
+    "build": "node ./test/build",
+    "watch": "node ./test/watch",
+    "expr": "node ./test/expr",
+    "test": "node ./test/build",
+    "debug": "node --debug-brk ./test/build"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1"
+  },
+  "devDependencies": {
+    "execution": "~0.0.3",
+    "record": "~0.2.0",
+    "glob": "*",
+    "mkdirp": "*",
+    "request": "*",
+    "coffee-script": "*",
+    "uglify-js": "~2.4.12",
+    "gaze": "*",
+    "es6-promise": "*"
+  },
+  "author": "yuanyan",
+  "license": "MIT"
+}
