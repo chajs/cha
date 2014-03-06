@@ -1,15 +1,14 @@
 // Load cha library.
 var cha = require('../')
+var tasks = require('./tasks')
+cha.watch = require('./tasks/watch')
 
 // Register tasks that should chaining.
-cha.in('read', require('./tasks/read'))
-   .in('cat', require('./tasks/cat'))
-   .in('coffee', require('./tasks/coffee'))
-   .in('write', require('./tasks/write'))
-   .in('uglifyjs', require('./tasks/uglifyjs'))
-   .in('copy', require('./tasks/copy'))
-
-cha.watch = require('./tasks/watch')
+cha.in('read',    tasks.read)
+   .in('cat',     tasks.cat)
+   .in('coffee',  tasks.coffee)
+   .in('write',   tasks.write)
+   .in('uglifyjs',tasks.uglifyjs)
 
 cha.watch('./fixtures/coffee/*.coffee', {
     cwd: __dirname,

@@ -20,15 +20,17 @@ Touch a tasks file and naming whatever you love like `build.js`:
 ```js
 // Load cha library.
 var cha = require('cha')
+// Load tasks directory with an index.js that exports ./tasks/glob.js, etc.
+var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',     require('./tasks/glob'))
-   .in('cat',      require('./tasks/cat'))
-   .in('replace',  require('./tasks/replace'))
-   .in('write',    require('./tasks/write'))
-   .in('uglifyjs', require('./tasks/uglifyjs'))
-   .in('copy',     require('./tasks/copy'))
-   .in('request',  require('./tasks/request'))
+cha.in('glob',     tasks.glob)
+    .in('cat',     tasks.cat)
+    .in('replace', tasks.replace)
+    .in('write',   tasks.write)
+    .in('uglifyjs',tasks.uglifyjs)
+    .in('copy',    tasks.copy)
+    .in('request', tasks.request)
 
 // Define task via chaining calls.
 cha()
@@ -85,16 +87,16 @@ copy out/foobar.js > ./out/foobar2.js
 
 ```js
 var cha = require('../')
+var tasks = require('./tasks')
 
 // Set a watcher.
 cha.watch = require('./tasks/watch')
 
-cha.in('read', require('./tasks/read'))
-   .in('cat', require('./tasks/cat'))
-   .in('coffee', require('./tasks/coffee'))
-   .in('write', require('./tasks/write'))
-   .in('uglifyjs', require('./tasks/uglifyjs'))
-   .in('copy', require('./tasks/copy'))
+cha.in('read',    tasks.read)
+   .in('cat',     tasks.cat)
+   .in('coffee',  tasks.coffee)
+   .in('write',   tasks.write)
+   .in('uglifyjs',tasks.uglifyjs)
 
 // Start watcher.
 cha.watch('./fixtures/coffee/*.coffee', {
@@ -129,14 +131,15 @@ write ./out/foobar3.js
 ```js
 // Load cha library.
 var cha = require('cha')
+var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',     require('./tasks/glob'))
-    .in('request',  require('./tasks/request'))
-    .in('cat',      require('./tasks/cat'))
-    .in('replace',  require('./tasks/replace'))
-    .in('write',    require('./tasks/write'))
-    .in('uglifyjs', require('./tasks/uglifyjs'))
+cha.in('glob',      tasks.glob)
+    .in('request',  tasks.request)
+    .in('cat',      tasks.cat)
+    .in('replace',  tasks.replace)
+    .in('write',    tasks.write)
+    .in('uglifyjs', tasks.uglifyjs)
 
 // Start with cha expressions.
 cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.js'])

@@ -1,14 +1,15 @@
 // Load cha library.
 var cha = require('../')
+var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob', require('./tasks/glob'))
-    .in('cat', require('./tasks/cat'))
-    .in('replace', require('./tasks/replace'))
-    .in('write', require('./tasks/write'))
-    .in('uglifyjs', require('./tasks/uglifyjs'))
-    .in('copy', require('./tasks/copy'))
-    .in('request', require('./tasks/request'))
+cha.in('glob',     tasks.glob)
+    .in('cat',     tasks.cat)
+    .in('replace', tasks.replace)
+    .in('write',   tasks.write)
+    .in('uglifyjs',tasks.uglifyjs)
+    .in('copy',    tasks.copy)
+    .in('request', tasks.request)
 
 cha()
     .glob({
