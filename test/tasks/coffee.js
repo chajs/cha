@@ -1,5 +1,5 @@
 var Execution = require('execution');
-var Record = require('Record');
+var Record = require('record');
 
 var CoffeeScript = Execution.extend({
     name: "coffee",
