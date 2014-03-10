@@ -240,4 +240,5 @@ module.exports = Concat
 
 ## Release History
 
-* 2014-03-05    0.1.0    Initial release
+* 2014-03-10    0.1.1    Custom tasks could override internal methods.
+* 2014-03-05    0.1.0    Initial release.
