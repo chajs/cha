@@ -1,6 +1,6 @@
 {
   "name": "cha",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Make task chaining.",
   "main": "./lib/cha.js",
   "scripts": {
