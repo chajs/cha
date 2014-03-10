@@ -2,7 +2,7 @@
   <img height="256" width="256" src="https://f.cloud.github.com/assets/677114/2333826/7f36d7ea-a471-11e3-99ea-fd8567069b7d.png"/>
 </p>
 
-cha ![NPM version](https://badge.fury.io/js/cha.png)
+cha ![NPM version](https://badge.fury.io/js/cha.png) ![Build Status](https://travis-ci.org/chajs/cha.png)
 ===
 > Make task chaining.
 
