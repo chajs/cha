@@ -238,6 +238,131 @@ var Concat = Execution.extend({
 module.exports = Concat
 ```
 
+## Internal methods
+
+Cha built-in some collection related methods: `map`, `filter`, `reject`, `find`, `findLast`, `uniq`, `first`, `last`, `at`, `sample`, `shuffle`.
+
+### map(callback)
+Creates an array of values by running each element in the collection through the callback.
+```js
+cha('glob:./**/*.*')
+    .map(function(record, index, collection){
+        return record;
+    })
+    // [<Record::Buffer path="./coffee/bar.coffee">, <Record::Buffer path="./coffee/foo.coffee">, <Record::Buffer path="./js/bar.js">, <Record::Buffer path="./js/foo.js">]
+```
+
+### filter(callback)
+Iterates over elements of a collection, returning an array of all elements the callback returns truey for.
+```js
+cha('glob:./**/*.*')
+    .filter(function(record, index, collection){
+        return record.path.indexOf('.js')
+    })
+    // [<Record::Buffer path="./js/foo.js">, <Record::Buffer path="./js/bar.js">]
+```
+
+### reject(callback)
+The opposite of `filter` this method returns the elements of a collection that the callback does `not` return truey for.
+```js
+cha('glob:./**/*.*')
+    .filter(function(record, index, collection){
+        return record.path.indexOf('.js')
+    })
+    // [<Record::Buffer path="./coffee/bar.coffee">, <Record::Buffer path="./coffee/foo.coffee">]
+```
+
+### find(callback)
+Iterates over elements of a collection, returning the first element that the callback returns truey for.
+```js
+cha('glob:./**/*.*')
+    .find(function(record, index, collection){
+        return record.path.indexOf('.js')
+    })
+    // [<Record::Buffer path="./js/bar.js">]
+```
+
+### findLast(callback)
+This method is like `find` except that it iterates over elements of a collection from right to left.
+```js
+cha('glob:./**/*.*')
+    .findLast(function(record, index, collection){
+        return record.path.indexOf('.js')
+    })
+    // [<Record::Buffer path="./js/foo.js">]
+```
+
+### uniq(callback)
+Creates a duplicate-value-free version of an array using strict equality for comparisons, i.e. ===.
+If a callback is provided each element of array is passed through the callback before uniqueness is computed.
+```js
+cha('glob:./**/*.*')
+    .uniq(function(record, index, collection){
+        return record.path.toLowerCase();
+    })
+    // [<Record::Buffer path="./coffee/bar.coffee">, <Record::Buffer path="./coffee/foo.coffee">, <Record::Buffer path="./js/bar.js">, <Record::Buffer path="./js/foo.js">]
+```
+
+### first([number])
+Gets the first element or first n elements of an array.
+```js
+cha('glob:./**/*.*')
+    .first()
+    // [<Record::Buffer path="./coffee/bar.coffee">]
+```
+```js
+cha('glob:./**/*.*')
+    .first(2)
+    // [<Record::Buffer path="./coffee/bar.coffee">, <Record::Buffer path="./coffee/foo.coffee">]
+```
+
+### last([number])
+Gets the last element or last n elements of an array.
+```js
+cha('glob:./**/*.*')
+    .last()
+    // [<Record::Buffer path="./js/foo.js">]
+```
+```js
+cha('glob:./**/*.*')
+    .last(2)
+    // [<Record::Buffer path="./js/bar.js">, <Record::Buffer path="./js/foo.js">]
+```
+
+### at([index])
+Creates an array of elements from the specified indexes of the collection. Indexes may be specified as arrays of indexes.
+```js
+cha('glob:./**/*.*')
+    .at(4)
+    // [<Record::Buffer path="./js/foo.js">]
+```
+```js
+cha('glob:./**/*.*')
+    .at([3, 4])
+    // [<Record::Buffer path="./js/bar.js">, <Record::Buffer path="./js/foo.js">]
+```
+
+### sample([number])
+Retrieves a random element or n random elements from a collection.
+```js
+cha('glob:./**/*.*')
+    .sample()
+    // [<Record::Buffer path="./js/foo.js">]
+```
+```js
+cha('glob:./**/*.*')
+    .sample(2)
+    // [<Record::Buffer path="./js/bar.js">, <Record::Buffer path="./coffee/foo.coffee">]
+```
+
+### shuffle()
+Creates an array of shuffled values, using a version of the [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher-Yates_shuffle).
+```js
+cha('glob:./**/*.*')
+    .shuffle()
+    // [<Record::Buffer path="./js/bar.js">, <Record::Buffer path="./coffee/bar.coffee">, <Record::Buffer path="./coffee/foo.coffee">, <Record::Buffer path="./js/foo.js">]
+```
+
 ## Release History
 
 * 2014-03-10    0.1.1    Custom tasks could override internal methods.
