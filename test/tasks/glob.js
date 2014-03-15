@@ -33,6 +33,7 @@ var Glob = Execution.extend({
                 contents: fs.readFileSync(filepath)
             });
         });
+        logger.log(this.name, records)
         resolve(inputs.concat(records));
     }
 
