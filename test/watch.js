@@ -1,7 +1,7 @@
 // Load cha library.
 var cha = require('../')
 var tasks = require('./tasks')
-cha.watch = require('./tasks/watch')
+cha.watch = require('./extensions/watch')
 
 // Register tasks that should chaining.
 cha.in('read',    tasks.read)
