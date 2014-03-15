@@ -7,6 +7,8 @@
     "build": "node ./test/build",
     "watch": "node ./test/watch",
     "expr": "node ./test/expr",
+    "dev": "node ./test/target --dev",
+    "dist": "node ./test/target --dist",
     "test": "node ./test/build",
     "debug": "node --debug-brk ./test/build"
   },
@@ -17,6 +19,7 @@
     "execution": "~0.0.3",
     "record": "~0.2.0",
     "glob": "*",
+    "nopt": "*",
     "mkdirp": "*",
     "request": "*",
     "coffee-script": "*",

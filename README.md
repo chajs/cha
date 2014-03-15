@@ -89,8 +89,8 @@ copy out/foobar.js > ./out/foobar2.js
 var cha = require('../')
 var tasks = require('./tasks')
 
-// Set a watcher.
-cha.watch = require('./tasks/watch')
+// Require watch extension.
+cha.watch = require('./extensions/watch')
 
 cha.in('read',    tasks.read)
    .in('cat',     tasks.cat)
@@ -123,6 +123,89 @@ $ npm run watch
 read /test/fixtures/coffee/bar.coffee
 read /test/fixtures/coffee/foo.coffee
 concat /test/fixtures/coffee/bar.coffee,/test/fixtures/coffee/foo.coffee
+write ./out/foobar3.js
+```
+
+## How to setting targets?
+
+```js
+var cha = require('../')
+var tasks = require('./tasks')
+
+// Require target extension.
+cha.target = require('./extensions/target')
+
+cha.in('read',     tasks.read)
+    .in('glob',    tasks.glob)
+    .in('cat',     tasks.cat)
+    .in('coffee',  tasks.coffee)
+    .in('write',   tasks.write)
+    .in('uglifyjs',tasks.uglifyjs)
+
+
+function input(source){
+    source
+        .coffee()
+        .cat()
+        .uglifyjs()
+        .write('./out/foobar3.js')
+}
+
+// Setting a "dev" target.
+cha.target('dev', function(){
+
+    // Require watch extension.
+    cha.watch = require('./extensions/watch')
+
+    // Start watcher.
+    cha.watch('./fixtures/coffee/*.coffee', {
+        cwd: __dirname,
+        immediately: true
+    }, function(filepath, event, watched){
+
+        input(cha().read(watched))
+
+    })
+})
+
+cha.target('test', function(){
+    console.log('Testing')
+})
+
+// Setting a "dist" target.
+cha.target('dist', function(){
+
+    input(cha().glob({
+        patterns: './fixtures/coffee/*.coffee',
+        cwd: __dirname
+    }))
+
+})
+
+// Setting a "build" target.
+cha.target('build', ['test', 'dist'])
+
+// Running target.
+// cha.target.run('build')
+
+```
+
+Add a arbitrary command to the `scripts` object:
+```json
+"dev": "node ./test/target --dev",
+"dist": "node ./test/target --dist",
+```
+
+To run the command we prepend our script name with run:
+```sh
+$ npm run dev
+
+> cha@0.1.1 dev /cha
+> node ./test/target --dev
+
+read /cha/test/fixtures/coffee/bar.coffee
+read /cha/test/fixtures/coffee/foo.coffee
+concat /cha/test/fixtures/coffee/bar.coffee,/cha/test/fixtures/coffee/foo.coffee
 write ./out/foobar3.js
 ```
 
@@ -167,6 +250,8 @@ request http://underscorejs.org/underscore-min.js
 concat http://underscorejs.org/underscore-min.js
 write ./out/foobar.js
 ```
+
+
 ## How to creating custom task?
 
 Chaining task should based on the [Task.JS](https://github.com/taskjs/spec) specification.
