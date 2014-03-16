@@ -85,12 +85,24 @@ copy out/foobar.js > ./out/foobar2.js
 
 ## How to use watch task?
 
+Install watch extension for cha:
+```sh
+npm install cha-watch --save-dev
+```
+
+Once the extension has been installed, it should required inside your scripts with this line of JavaScript:
 ```js
-var cha = require('../')
+cha.watch = require('cha-watch')
+```
+
+Example script:
+
+```js
+var cha = require('cha')
 var tasks = require('./tasks')
 
 // Require watch extension.
-cha.watch = require('./extensions/watch')
+cha.watch = require('cha-watch')
 
 cha.in('read',    tasks.read)
    .in('cat',     tasks.cat)
@@ -128,12 +140,23 @@ write ./out/foobar3.js
 
 ## How to setting targets?
 
+Install target extension for cha:
+```sh
+npm install cha-target --save-dev
+```
+
+Once the extension has been installed, it should required inside your scripts with this line of JavaScript:
 ```js
-var cha = require('../')
+cha.target = require('cha-target')
+```
+
+Example script:
+```js
+var cha = require('cha')
 var tasks = require('./tasks')
 
 // Require target extension.
-cha.target = require('./extensions/target')
+cha.target = require('cha-target')
 
 cha.in('read',     tasks.read)
     .in('glob',    tasks.glob)
@@ -155,7 +178,7 @@ function input(source){
 cha.target('dev', function(){
 
     // Require watch extension.
-    cha.watch = require('./extensions/watch')
+    cha.watch = require('cha-watch')
 
     // Start watcher.
     cha.watch('./fixtures/coffee/*.coffee', {
@@ -168,10 +191,6 @@ cha.target('dev', function(){
     })
 })
 
-cha.target('test', function(){
-    console.log('Testing')
-})
-
 // Setting a "dist" target.
 cha.target('dist', function(){
 
@@ -182,18 +201,24 @@ cha.target('dist', function(){
 
 })
 
-// Setting a "build" target.
-cha.target('build', ['test', 'dist'])
+// Setting a "all" target.
+cha.target('all', ['dev', 'dist'])
 
 // Running target.
-// cha.target.run('build')
-
+// cha.target.run('all')
 ```
 
 Add a arbitrary command to the `scripts` object:
+
 ```json
-"dev": "node ./test/target --dev",
-"dist": "node ./test/target --dist",
+{
+  "name": "cha-example",
+  "scripts": {
+    "dev": "node ./test/target dev",
+    "dist": "node ./test/target dist",
+    "all": "node ./test/target all",
+  }
+}
 ```
 
 To run the command we prepend our script name with run:
@@ -201,7 +226,7 @@ To run the command we prepend our script name with run:
 $ npm run dev
 
 > cha@0.1.1 dev /cha
-> node ./test/target --dev
+> node ./test/target dev
 
 read /cha/test/fixtures/coffee/bar.coffee
 read /cha/test/fixtures/coffee/foo.coffee
@@ -250,7 +275,6 @@ request http://underscorejs.org/underscore-min.js
 concat http://underscorejs.org/underscore-min.js
 write ./out/foobar.js
 ```
-
 
 ## How to creating custom task?
 
