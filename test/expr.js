@@ -22,4 +22,4 @@ cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.
     })
     .cat()
     .uglifyjs()
-    .write('./out/foobar.js')
+    .write('./test/out/foobar.js')
