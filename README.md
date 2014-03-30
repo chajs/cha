@@ -8,7 +8,7 @@ cha [![NPM version](https://badge.fury.io/js/cha.png)](http://npm.org/cha) [![Bu
 
 Cha allows tasks to be connected together into a chain that makes better readability and easier to maintain.
 
-## How to getting started?
+## Getting Started
 
 Installing cha via NPM, this will install the latest version of cha in your project folder
 and adding it to your `devDependencies` in `package.json`:
@@ -74,7 +74,7 @@ To run the command we prepend our script name with run:
 ```sh
 $ npm run build
 
-> cha@0.0.1 build 
+> cha@0.0.1 build
 > node ./test/build
 
 request http://underscorejs.org/underscore-min.js
@@ -83,7 +83,7 @@ write ./out/foobar.js
 copy out/foobar.js > ./out/foobar2.js
 ```
 
-## How to use watch task?
+## How to set file watcher?
 
 Install watch extension for cha:
 ```sh
@@ -129,7 +129,7 @@ To run the command we prepend our script name with run:
 ```sh
 $ npm run watch
 
-> cha@0.0.1 watch 
+> cha@0.0.1 watch
 > node ./test/watch
 
 read /test/fixtures/coffee/bar.coffee
@@ -138,7 +138,7 @@ concat /test/fixtures/coffee/bar.coffee,/test/fixtures/coffee/foo.coffee
 write ./out/foobar3.js
 ```
 
-## How to setting targets?
+## How to set targets?
 
 Install target extension for cha:
 ```sh
@@ -268,7 +268,7 @@ To run the command we prepend our script name with run:
 ```sh
 $ npm run expr
 
-> cha@0.0.1 expr 
+> cha@0.0.1 expr
 > node ./test/expr
 
 request http://underscorejs.org/underscore-min.js
