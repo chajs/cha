@@ -276,6 +276,34 @@ concat http://underscorejs.org/underscore-min.js
 write ./out/foobar.js
 ```
 
+## How to setting task?
+
+```js
+// Load cha library.
+var cha = require('cha')
+var tasks = require('./tasks')
+
+// Register tasks that should chaining.
+cha.in('request',   tasks.request)
+    .in('glob',      tasks.glob)
+    .in('uglifyjs', tasks.uglifyjs)
+    .in('write',    tasks.write)
+
+// Start with cha expressions.
+cha()
+    .glob({
+        patterns: './fixtures/js/*.js'
+    })
+    .request({
+        url: 'http://underscorejs.org/underscore.js'
+    }, {
+        ignore: true, // Ignore task inputs.
+        timeout: 2000 // 2000ms timeout.
+    })
+    .uglifyjs()
+    .write('./underscore-min.js')
+```
+
 ## How to creating custom task?
 
 Chaining task should based on the [Task.JS](https://github.com/taskjs/spec) specification.
@@ -349,6 +377,7 @@ module.exports = Concat
 
 ## Release History
 
+* 2014-05-19    0.2.1    Task accept `settings` param with general options.
 * 2014-05-18    0.2.0    Remove Internal methods.
 * 2014-03-17    0.1.2    Extensions for cha.
 * 2014-03-10    0.1.1    Custom tasks could override internal methods.
