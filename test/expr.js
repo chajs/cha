@@ -1,14 +1,13 @@
 // Load cha library.
 var cha = require('../')
-var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',      tasks.glob)
-    .in('request',  tasks.request)
-    .in('cat',      tasks.cat)
-    .in('replace',  tasks.replace)
-    .in('write',    tasks.write)
-    .in('uglifyjs', tasks.uglifyjs)
+cha.in('glob',     require('task-glob'))
+    .in('combine', require('task-combine'))
+    .in('replace', require('task-replace'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs',require('task-uglifyjs'))
+    .in('request', require('task-request'))
 
 // Start with cha expressions.
 cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.js'])
@@ -20,6 +19,6 @@ cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.
         search: /DEBUG/g,
         replace: true
     })
-    .cat()
+    .combine()
     .uglifyjs()
-    .write('./test/out/foobar.js')
+    .writer('./test/out/foobar.js')

@@ -10,22 +10,21 @@
   "scripts": {
     "build": "node ./test/build",
     "expr": "node ./test/expr",
-    "test": "node ./test/build",
+    "test": "node ./test/build & node ./test/expr",
     "debug": "node --debug-brk ./test/build"
   },
   "dependencies": {
     "lodash": "~2.4.1"
   },
   "devDependencies": {
-    "execution": "~0.0.3",
-    "record": "~0.2.0",
-    "glob": "*",
-    "mkdirp": "*",
-    "request": "*",
-    "coffee-script": "*",
-    "uglify-js": "~2.4.12",
-    "es6-promise": "*"
+    "task-combine": "^0.1.0",
+    "task-copy": "^0.1.1",
+    "task-glob": "^0.1.0",
+    "task-replace": "^0.1.0",
+    "task-request": "^0.1.0",
+    "task-uglifyjs": "^0.1.0",
+    "task-writer": "^0.1.0"
   },
-  "author": "yuanyan",
+  "author": "Yuanyan Cao",
   "license": "ISC"
 }

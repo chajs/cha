@@ -1,16 +1,16 @@
 // Load cha library.
 var cha = require('../')
-var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',     tasks.glob)
-    .in('cat',     tasks.cat)
-    .in('replace', tasks.replace)
-    .in('write',   tasks.write)
-    .in('uglifyjs',tasks.uglifyjs)
-    .in('copy',    tasks.copy)
-    .in('request', tasks.request)
+cha.in('glob',     require('task-glob'))
+    .in('combine', require('task-combine'))
+    .in('replace', require('task-replace'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs',require('task-uglifyjs'))
+    .in('copy',    require('task-copy'))
+    .in('request', require('task-request'))
 
+// Define task via chaining calls.
 cha()
     .glob({
         patterns: './fixtures/js/*.js',
@@ -24,17 +24,10 @@ cha()
         search: /DEBUG/g,
         replace: true
     })
-    .replace({
-        search: /v(\d+)/,
-        replace: function (match, v) {
-            var v = Number(v);
-            return 'v' + ++v
-        }
-    })
     .request('http://underscorejs.org/underscore-min.js')
-    .cat()
+    .combine()
     .uglifyjs()
-    .write('./test/out/foobar.js')
+    .writer('./test/out/foobar.js')
     .copy('./test/out/foobar2.js')
     .catch(function (err) {
         console.log(err.stack || err)

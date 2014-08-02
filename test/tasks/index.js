@@ -1,9 +1,0 @@
-exports.glob = require('./glob');
-exports.read = require('./read');
-exports.coffee = require('./coffee');
-exports.copy = require('./copy');
-exports.replace = require('./replace');
-exports.request = require('./request');
-exports.cat = require('./cat');
-exports.uglifyjs = require('./uglifyjs');
-exports.write = require('./write');

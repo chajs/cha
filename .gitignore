@@ -50,3 +50,4 @@ publish
 node_modules
 dist
 out
+test/out

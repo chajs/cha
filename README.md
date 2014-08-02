@@ -20,17 +20,15 @@ Touch a tasks file and naming whatever you love like `build.js`:
 ```js
 // Load cha library.
 var cha = require('cha')
-// Load tasks directory with an index.js that exports ./tasks/glob.js, etc.
-var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',     tasks.glob)
-    .in('cat',     tasks.cat)
-    .in('replace', tasks.replace)
-    .in('write',   tasks.write)
-    .in('uglifyjs',tasks.uglifyjs)
-    .in('copy',    tasks.copy)
-    .in('request', tasks.request)
+cha.in('glob',     require('task-glob'))
+    .in('combine', require('task-combine'))
+    .in('replace', require('task-replace'))
+    .in('writer',  require('task-writer'))
+    .in('uglifyjs',require('task-uglifyjs'))
+    .in('copy',    require('task-copy'))
+    .in('request', require('task-request'))
 
 // Define task via chaining calls.
 cha()
@@ -47,13 +45,9 @@ cha()
         replace: true
     })
     .request('http://underscorejs.org/underscore-min.js')
-    .map(function(record){
-        console.log(record.path)
-        return record;
-    })
-    .cat()
+    .combine()
     .uglifyjs()
-    .write('./out/foobar.js')
+    .writer('./out/foobar.js')
     .copy('./out/foobar2.js')
 ```
 
@@ -101,14 +95,13 @@ Example script:
 var cha = require('cha')
 var tasks = require('./tasks')
 
-// Require watch extension.
-cha.watch = require('cha-watch')
+// Register tasks that should chaining.
+cha.in('reader',    require('task-reader'))
+    .in('coffee',   require('task-coffee'))
+    .in('combine',  require('task-combine'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs', require('task-uglifyjs'))
 
-cha.in('read',    tasks.read)
-   .in('cat',     tasks.cat)
-   .in('coffee',  tasks.coffee)
-   .in('write',   tasks.write)
-   .in('uglifyjs',tasks.uglifyjs)
 
 // Start watcher.
 cha.watch('./fixtures/coffee/*.coffee', {
@@ -116,11 +109,11 @@ cha.watch('./fixtures/coffee/*.coffee', {
     immediately: true
 }, function(filepath, event, watched){
 
-    cha().read(watched)
+    cha().reader(watched)
         .coffee()
         .cat()
         .uglifyjs()
-        .write('./out/foobar3.js')
+        .writer('./out/foobar3.js')
 })
 
 ```
@@ -153,25 +146,24 @@ cha.target = require('cha-target')
 Example script:
 ```js
 var cha = require('cha')
-var tasks = require('./tasks')
 
 // Require target extension.
 cha.target = require('cha-target')
 
-cha.in('read',     tasks.read)
-    .in('glob',    tasks.glob)
-    .in('cat',     tasks.cat)
-    .in('coffee',  tasks.coffee)
-    .in('write',   tasks.write)
-    .in('uglifyjs',tasks.uglifyjs)
-
+// Register tasks that should chaining.
+cha.in('reader',    require('task-reader'))
+    .in('coffee',   require('task-coffee'))
+    .in('glob',     require('task-glob'))
+    .in('combine',  require('task-combine'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs', require('task-uglifyjs'))
 
 function input(source){
     source
         .coffee()
-        .cat()
+        .combine()
         .uglifyjs()
-        .write('./out/foobar3.js')
+        .writer('./out/foobar3.js')
 }
 
 // Setting a "dev" target.
@@ -186,7 +178,7 @@ cha.target('dev', function(){
         immediately: true
     }, function(filepath, event, watched){
 
-        input(cha().read(watched))
+        input(cha().reader(watched))
 
     })
 })
@@ -239,15 +231,14 @@ write ./out/foobar3.js
 ```js
 // Load cha library.
 var cha = require('cha')
-var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('glob',      tasks.glob)
-    .in('request',  tasks.request)
-    .in('cat',      tasks.cat)
-    .in('replace',  tasks.replace)
-    .in('write',    tasks.write)
-    .in('uglifyjs', tasks.uglifyjs)
+cha.in('glob',     require('task-glob'))
+    .in('combine', require('task-combine'))
+    .in('replace', require('task-replace'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs',require('task-uglifyjs'))
+    .in('request', require('task-request'))
 
 // Start with cha expressions.
 cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.js'])
@@ -259,9 +250,9 @@ cha(['glob:./fixtures/js/*.js', 'request:http://underscorejs.org/underscore-min.
         search: /DEBUG/g,
         replace: true
     })
-    .cat()
+    .combine()
     .uglifyjs()
-    .write('./out/foobar.js')
+    .writer('./test/out/foobar.js')
 ```
 
 To run the command we prepend our script name with run:
@@ -281,13 +272,12 @@ write ./out/foobar.js
 ```js
 // Load cha library.
 var cha = require('cha')
-var tasks = require('./tasks')
 
 // Register tasks that should chaining.
-cha.in('request',   tasks.request)
-    .in('glob',      tasks.glob)
-    .in('uglifyjs', tasks.uglifyjs)
-    .in('write',    tasks.write)
+cha.in('glob',     require('task-glob'))
+    .in('writer',   require('task-writer'))
+    .in('uglifyjs',require('task-uglifyjs'))
+    .in('request', require('task-request'))
 
 // Start with cha expressions.
 cha()
@@ -301,7 +291,7 @@ cha()
         timeout: 2000 // 2000ms timeout.
     })
     .uglifyjs()
-    .write('./underscore-min.js')
+    .writer('./underscore-min.js')
 ```
 
 ## How to creating custom task?
