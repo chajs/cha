@@ -10,7 +10,7 @@
   "scripts": {
     "build": "node ./test/build",
     "expr": "node ./test/expr",
-    "test": "node ./test/build & node ./test/expr",
+    "test": "node ./test/build && node ./test/expr",
     "debug": "node --debug-brk ./test/build"
   },
   "dependencies": {

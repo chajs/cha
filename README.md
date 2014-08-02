@@ -77,156 +77,13 @@ write ./out/foobar.js
 copy out/foobar.js > ./out/foobar2.js
 ```
 
-## How to set file watcher?
+## Cha Extensions
 
-Install watch extension for cha:
-```sh
-npm install cha-watch --save-dev
-```
+* [cha-load](https://github.com/chajs/cha-load)     - Automatically load cha and register tasks.
+* [cha-watch](https://github.com/chajs/cha-watch)   - File watcher.
+* [cha-target](https://github.com/chajs/cha-target) - Target runner.
 
-Once the extension has been installed, it should required inside your scripts with this line of JavaScript:
-```js
-cha.watch = require('cha-watch')
-```
-
-Example script:
-
-```js
-var cha = require('cha')
-var tasks = require('./tasks')
-
-// Register tasks that should chaining.
-cha.in('reader',    require('task-reader'))
-    .in('coffee',   require('task-coffee'))
-    .in('combine',  require('task-combine'))
-    .in('writer',   require('task-writer'))
-    .in('uglifyjs', require('task-uglifyjs'))
-
-
-// Start watcher.
-cha.watch('./fixtures/coffee/*.coffee', {
-    cwd: __dirname,
-    immediately: true
-}, function(filepath, event, watched){
-
-    cha().reader(watched)
-        .coffee()
-        .cat()
-        .uglifyjs()
-        .writer('./out/foobar3.js')
-})
-
-```
-
-To run the command we prepend our script name with run:
-```sh
-$ npm run watch
-
-> cha@0.0.1 watch
-> node ./test/watch
-
-read /test/fixtures/coffee/bar.coffee
-read /test/fixtures/coffee/foo.coffee
-concat /test/fixtures/coffee/bar.coffee,/test/fixtures/coffee/foo.coffee
-write ./out/foobar3.js
-```
-
-## How to set targets?
-
-Install target extension for cha:
-```sh
-npm install cha-target --save-dev
-```
-
-Once the extension has been installed, it should required inside your scripts with this line of JavaScript:
-```js
-cha.target = require('cha-target')
-```
-
-Example script:
-```js
-var cha = require('cha')
-
-// Require target extension.
-cha.target = require('cha-target')
-
-// Register tasks that should chaining.
-cha.in('reader',    require('task-reader'))
-    .in('coffee',   require('task-coffee'))
-    .in('glob',     require('task-glob'))
-    .in('combine',  require('task-combine'))
-    .in('writer',   require('task-writer'))
-    .in('uglifyjs', require('task-uglifyjs'))
-
-function input(source){
-    source
-        .coffee()
-        .combine()
-        .uglifyjs()
-        .writer('./out/foobar3.js')
-}
-
-// Setting a "dev" target.
-cha.target('dev', function(){
-
-    // Require watch extension.
-    cha.watch = require('cha-watch')
-
-    // Start watcher.
-    cha.watch('./fixtures/coffee/*.coffee', {
-        cwd: __dirname,
-        immediately: true
-    }, function(filepath, event, watched){
-
-        input(cha().reader(watched))
-
-    })
-})
-
-// Setting a "dist" target.
-cha.target('dist', function(){
-
-    input(cha().glob({
-        patterns: './fixtures/coffee/*.coffee',
-        cwd: __dirname
-    }))
-
-})
-
-// Setting a "all" target.
-cha.target('all', ['dev', 'dist'])
-
-// Running target.
-// cha.target.run('all')
-```
-
-Add a arbitrary command to the `scripts` object:
-
-```json
-{
-  "name": "cha-example",
-  "scripts": {
-    "dev": "node ./test/target dev",
-    "dist": "node ./test/target dist",
-    "all": "node ./test/target all",
-  }
-}
-```
-
-To run the command we prepend our script name with run:
-```sh
-$ npm run dev
-
-> cha@0.1.1 dev /cha
-> node ./test/target dev
-
-read /cha/test/fixtures/coffee/bar.coffee
-read /cha/test/fixtures/coffee/foo.coffee
-concat /cha/test/fixtures/coffee/bar.coffee,/cha/test/fixtures/coffee/foo.coffee
-write ./out/foobar3.js
-```
-
-## How to enjoy cha expressions?
+## Cha Expressions
 
 ```js
 // Load cha library.
@@ -236,7 +93,7 @@ var cha = require('cha')
 cha.in('glob',     require('task-glob'))
     .in('combine', require('task-combine'))
     .in('replace', require('task-replace'))
-    .in('writer',   require('task-writer'))
+    .in('writer',  require('task-writer'))
     .in('uglifyjs',require('task-uglifyjs'))
     .in('request', require('task-request'))
 
@@ -267,7 +124,7 @@ concat http://underscorejs.org/underscore-min.js
 write ./out/foobar.js
 ```
 
-## How to setting task?
+## Task Settings
 
 ```js
 // Load cha library.
@@ -275,7 +132,7 @@ var cha = require('cha')
 
 // Register tasks that should chaining.
 cha.in('glob',     require('task-glob'))
-    .in('writer',   require('task-writer'))
+    .in('writer',  require('task-writer'))
     .in('uglifyjs',require('task-uglifyjs'))
     .in('request', require('task-request'))
 
@@ -294,76 +151,10 @@ cha()
     .writer('./underscore-min.js')
 ```
 
-## How to creating custom task?
+## JavaScript Tasks
 
-Chaining task should based on the [Task.JS](https://github.com/taskjs/spec) specification.
-
-The following example creating a task concatenate files from the inputs. It extend from `Execution` class and define `execute` method:
-
-```js
-var _ = require('lodash');
-var fs = require('fs');
-var path = require('path');
-var Execution = require('execution');
-var Record = require('record');
-
-var Concat = Execution.extend({
-    // Naming your task.
-    name: 'concat',
-    // Task description.
-    description: 'Concatenate files',
-    // Task options.
-    options: {
-        banner: {
-            default: '',
-            description: 'The string will be prepended to the beginning of the contents'
-        },
-        endings: {
-            default: '\n',
-            description: 'Make sure each file endings with newline'
-        },
-        footer: {
-            default: '',
-            description: 'The string will be append to the end of the contents'
-        }
-    },
-    // Override `execution` method.
-    execute: function (resolve, reject) {
-        var options = this.options;
-        var logger = this.logger;
-        var inputs = this.inputs;
-
-        var endings = options.endings;
-        var banner = options.banner;
-        var footer = options.footer;
-
-        var paths = _.pluck(inputs, 'path');
-        logger.log(this.name, paths.join(','));
-
-        var contents = this.concat(inputs, endings);
-
-        // Return new record object.
-        resolve(new Record({
-            contents: banner + contents + footer
-        }));
-    },
-    concat: function (inputs, endings) {
-
-        return inputs.map(function (record, index, array) {
-            var contents = record.contents.toString();
-            if (!RegExp(endings + '$').test(contents)) {
-                contents += endings;
-            }
-            return contents;
-        }).reduce(function (previousContents, currentContents, index, array) {
-                return previousContents + currentContents;
-            }, '');
-
-    }
-});
-
-module.exports = Concat
-```
+All register task should based on the [JavaScript Task](https://github.com/taskjs/spec) specification.
+You could get available tasks from [JavaScript Task Packages] (http://taskjs.github.io/packages/) website.
 
 ## Release History
 
