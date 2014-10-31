@@ -82,6 +82,7 @@ copy out/foobar.js > ./out/foobar2.js
 * [cha-load](https://github.com/chajs/cha-load)     - Automatically load cha and register tasks.
 * [cha-watch](https://github.com/chajs/cha-watch)   - File watcher.
 * [cha-target](https://github.com/chajs/cha-target) - Target runner.
+* [cha-gulp](https://github.com/chajs/cha-gulp)     - Gulp plugin adapter.
 
 ## Cha Expressions
 
